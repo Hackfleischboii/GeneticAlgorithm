@@ -1,13 +1,12 @@
 import random as rnd
-
-MATING_POOL_PERCENT = 0.2
+import City
 
 MUTATION_PROBABILITY = 0.1
 
 population_size = 0
 
 class Node:
-    def __init__(self, id : int, tour):
+    def __init__(self, id, tour):
         self.id = id
         self.tour = tour
         self.fitness = None
@@ -43,12 +42,12 @@ class Node:
             output[i], output[j] = output[j], output[i]
             self.tour = output
 
+
 class Population:
     def __init__(self, nodes):
         self.nodes = nodes
         self.mating_pool = None
         self.best_fitness = -float('inf')
-        population_size = len(nodes)
 
     def __repr__(self):
         output = ""
@@ -81,12 +80,12 @@ def euclidean_distance_squared(point1, point2):
     return (point1[0] - point2[0])**2 + (point1[1] - point2[1])**2
 
 def gen_new_population(population):
-    tour1 = population.mating_pool[0]
-    tour2 = population.mating_pool[1]
+    tour1 = population.mating_pool[0].tour
+    tour2 = population.mating_pool[1].tour
 
     start_index = 0
     cur_index = start_index
-    output = [None] * len(tour1)
+    output = []
     visited = []
 
     while cur_index not in visited:
@@ -100,4 +99,4 @@ def gen_new_population(population):
         else:
             output.append(tour2[i])
 
-    return Population([Node(i, output) for i in range(population_size)])
+    return Population([Node(i, output) for i in range(len(population.nodes))])
