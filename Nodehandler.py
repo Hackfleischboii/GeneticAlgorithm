@@ -1,12 +1,8 @@
 import random as rnd
-
 import math
 
-import City
-import Main
-
-MUTATION_PROBABILITY = 0.1
-MATING_POOL_SIZE = 5
+MUTATION_PROBABILITY = 0.05
+MATING_POOL_SIZE = 10
 
 class Node:
     def __init__(self, id, tour):
@@ -38,7 +34,7 @@ class Node:
         self.fitness = 1 / total if total > 0 else float('inf')
 
     def mutate(self):
-        if rnd.randint(0, int((1 / MUTATION_PROBABILITY) + 1)) == 0:
+        if rnd.random() < MUTATION_PROBABILITY:
             output = self.tour.copy()
             i = rnd.randint(0, len(output) - 1)
             j = rnd.randint(0, len(output) - 1)
@@ -69,11 +65,11 @@ class Population:
             node.calc_fitness()
 
     #Selektion
-    def select_best(self):
+    def create_mating_pool(self):
         node_weights = calc_list_weights(self.nodes)
         self.mating_pool = rnd.choices(self.nodes, weights=node_weights, k=MATING_POOL_SIZE)
         self.mating_pool.sort(key=lambda x: x.fitness, reverse=True)
-        self.best_fitness = self.mating_pool[0].fitness
+        self.best_fitness = self.mating_pool[0]
 
     #Mutation
     def mutate_pop(self):
@@ -90,11 +86,11 @@ def calc_list_weights(list):
 #Crossover
 def gen_new_population(population):
     new_nodes = []
-    for i in range(Main.NUM_PER_POP):
+    for i in range(len(population.nodes)):
         #2 verschiedene Touren auswählen
         mating_pool_weights = calc_list_weights(population.mating_pool)
         node1 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
-        node2 = node2 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
+        node2 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
         while node1.id == node2.id:
             node2 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
         tour1 = node1.tour
@@ -119,32 +115,4 @@ def gen_mixed_tour(tour1, tour2):
             output.append(tour1[i])
         else:
             output.append(tour2[i])
-
-def gen_new_population1(population):
-    mating_pool_weights = calc_list_weights(population.mating_pool)
-
-    node1 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
-    node2 = node2 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
-    while node1.id == node2.id:
-        node2 = rnd.choices(population.mating_pool, weights=mating_pool_weights, k=1)[0]
-
-    tour1 = node1.tour
-    tour2 = node2.tour
-
-    start_index = 0
-    cur_index = start_index
-    output = []
-    visited = []
-
-    while cur_index not in visited:
-        visited.append(cur_index)
-        tour1_city = tour1[cur_index]
-        cur_index = tour2.index(tour1_city)
-
-    for i in range(len(tour1)):
-        if i in visited:
-            output.append(tour1[i])
-        else:
-            output.append(tour2[i])
-
-    return Population([Node(i, output) for i in range(len(population.nodes))])
+    return output

@@ -1,4 +1,3 @@
-from Nodehandler import *
 import matplotlib.pyplot as plt
 
 class Display:
@@ -8,8 +7,8 @@ class Display:
 
     def plot(self):
         plt.clf()
-        plt.xlabel('x')
-        plt.ylabel('y')
+        plt.xlabel('X-Koordinate')
+        plt.ylabel('Y-Koordinate')
         plt.title(str( "Aktuelle Generation: " + str(self.index) + "\n" +
                     "Höchste Fitness der aktuellen Generation: " + str(self.best_node.fitness) + "\n" +
                     "Aktuelle kürzeste Strecke: " + str(1 / self.best_node.fitness)))
@@ -22,4 +21,6 @@ class Display:
         plt.plot(x_coords, y_coords, color='black')
         plt.scatter(x_coords, y_coords, s=50, c='black')
 
+        plt.savefig("images/" + str(self.index) + ".png")
         plt.show()
+
