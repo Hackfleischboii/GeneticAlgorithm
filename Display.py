@@ -8,6 +8,8 @@ class Display:
 
     def plot(self):
         plt.clf()
+        plt.xlabel('x')
+        plt.ylabel('y')
         plt.title(str( "Aktuelle Generation: " + str(self.index) + "\n" +
                     "Höchste Fitness der aktuellen Generation: " + str(self.best_node.fitness) + "\n" +
                     "Aktuelle kürzeste Strecke: " + str(1 / self.best_node.fitness)))
