@@ -1,11 +1,11 @@
 import City
-from Display import Display
+from Display import Display, clear_img_folder, create_gif
 import Nodehandler
 
 MAX_ITERATIONS_NO_IMPROVE = 50
 MAX_ITERATIONS = 5000
 NUM_CITIES = 10
-NUM_PER_POP = 100
+NUM_PER_POP = 1000
 
 def main():
     cities = initialise_cities(NUM_CITIES)
@@ -14,6 +14,8 @@ def main():
 
     initial_pop.evaluate_nodes()
     initial_pop.create_mating_pool()
+
+    clear_img_folder()
 
     display = Display(initial_pop.best_fitness, 0)
     print("Initial Pop's best fitness:", initial_pop.best_fitness)
@@ -39,11 +41,13 @@ def main():
             no_change_counter = 0
         last_pop = cur_pop
         iteration += 1
+        display = Display(last_pop.best_fitness, iteration)
+        display.plot()
 
-    display = Display(last_pop.best_fitness, iteration)
     print("Last Pop's best fitness:", last_pop.best_fitness)
     print("No change counter ", no_change_counter)
-    display.plot()
+
+    create_gif()
 
 def initialise_cities(num_cities):
     cities = []

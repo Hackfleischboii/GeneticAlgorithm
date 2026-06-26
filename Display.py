@@ -1,4 +1,7 @@
+import os
+import imageio
 import matplotlib.pyplot as plt
+
 
 class Display:
     def __init__(self, best_node, index):
@@ -22,5 +25,15 @@ class Display:
         plt.scatter(x_coords, y_coords, s=50, c='black')
 
         plt.savefig("images/" + str(self.index) + ".png")
-        plt.show()
+        #plt.show()
 
+def clear_img_folder():
+    for filename in os.listdir("images/"):
+        os.remove("images/" + filename)
+
+def create_gif():
+    with imageio.get_writer('images/00tour.gif', mode='I', duration=30, loop=0) as writer:
+        for i in range(len(os.listdir("images/"))):
+            filename = str(i) + ".png"
+            image = imageio.imread("images/" + filename)
+            writer.append_data(image)

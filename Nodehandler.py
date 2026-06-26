@@ -1,7 +1,7 @@
 import random as rnd
 import math
 
-MUTATION_PROBABILITY = 0.05
+MUTATION_PROBABILITY = 0.1
 MATING_POOL_SIZE = 10
 
 class Node:
