@@ -1,0 +1,2 @@
+This is a simple implementation of a genetic Algorithm to the Travelling Salesman Problem.
+Required Packages are imageio, numpy and matplotlib
